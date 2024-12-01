@@ -1,0 +1,21 @@
+{
+    "name": "Multiple Choice Quiz",
+    "short_name": "QuizApp",
+    "description": "A quiz app for multiple-choice questions on Técnica and Reglamento topics.",
+    "start_url": "index.html",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#007BFF",
+    "icons": [
+        {
+            "src": "icons/icon-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/icon-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}
