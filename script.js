@@ -1,6 +1,11 @@
 let currentSet = [];
 let currentIndex = 0;
 let currentSetName = '';
+let otherSet = '';
+    
+
+let preguntaActual = 0;
+let puntaje = 0;
 
 const questionContainer = document.getElementById('question-container');
 const nextButton = document.getElementById('next-button');
@@ -15,6 +20,8 @@ async function fetchQuestions(set) {
 async function startQuiz(set) {
     currentSetName = set;
     currentSet = await fetchQuestions(set);
+    otherSet = set == 'tecnica' ? 'reglamento' : 'tecnica';
+    
     currentIndex = 0;
 
     selectionContainer.style.display = 'none';
@@ -56,25 +63,35 @@ function evaluateAnswer() {
 
     const feedback = document.getElementById('feedback');
 
+    /*if (selectedOptions.size == 0) {
+        feedback.innerHTML = `<p style="color: green;">Por favor, selecciona una respuesta.</p>`;
+
+    }*/  
     if (selectedOptions.length === correctAnswers.length && 
         selectedOptions.every(val => correctAnswers.includes(val))) {
-        feedback.innerHTML = `<p style="color: green;">Correct! Great job!</p>`;
+        preguntaActual++;
+        puntaje++;
+        feedback.innerHTML = `<p style="color: green;">Correcto! Gran trabajo!</p>
+        <p>Tu puntaje es: ${puntaje} de ${preguntaActual}</p>
+        `;
     } else {
+        preguntaActual++;
         const correctOptions = correctAnswers.map(index => currentSet[currentIndex].opciones[index]);
         feedback.innerHTML = `
-            <p style="color: red;">Incorrect! The correct answer(s) are:</p>
+            <p style="color: red;">Incorrecto! La(s) respuesta(s) correcta(s) es/son:</p>
             <ul>${correctOptions.map(option => `<li>${option}</li>`).join('')}</ul>
+            <p>Tu puntaje es: ${puntaje} de ${preguntaActual}</p>
         `;
     }
 
     // Show "Switch Set" button after answering
     const switchContainer = document.getElementById('switch-container');
-    switchContainer.innerHTML = `<button id="switch-button">Switch to Other Set</button>`;
+    switchContainer.innerHTML = `<button id="switch-button">Siguiente pregunta ${otherSet}</button>`;
     switchContainer.style.display = 'block';
 
     document.getElementById('switch-button').onclick = switchSet;
 
-    nextButton.innerText = "Next Question";
+    nextButton.innerText = "Siguiente pregunta "+ currentSetName;
     nextButton.onclick = () => {
         currentIndex++;
         loadQuestion();
@@ -82,14 +99,15 @@ function evaluateAnswer() {
 }
 
 function switchSet() {
-    const otherSet = currentSetName === 'tecnica' ? 'reglamento' : 'tecnica';
     startQuiz(otherSet);
 }
 
 function resetQuiz() {
+    preguntaActual = 0;
+    puntaje = 0;
     questionContainer.style.display = 'none';
     nextButton.style.display = 'none';
     selectionContainer.style.display = 'block';
-    nextButton.innerText = 'Next';
+    nextButton.innerText = 'Siguiente';
     nextButton.onclick = null;
 }
