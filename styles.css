@@ -20,6 +20,7 @@ h1, h2 {
 
 button {
     padding: 10px 20px;
+    margin: 10px;
     border: none;
     background-color: #007BFF;
     color: white;
@@ -31,14 +32,34 @@ button:hover {
     background-color: #0056b3;
 }
 
+#selection-container {
+    text-align: center;
+}
+
+#switch-container {
+    text-align: center;
+}
+
+#submit-container {
+    text-align: center;
+}
+
+#title {
+    text-align: center;
+}
+
 /* Asegura que cada opción de respuesta se muestre en una línea separada */
 label {
     display: block;
     margin-bottom: 10px; /* Espacio entre cada opción */
-  }
-  
-  /* Opcional: mejora la apariencia de los botones de radio */
-  input[type="radio"] {
+}
+
+/* Opcional: mejora la apariencia de los botones de radio */
+input[type="radio"] {
     margin-right: 10px; /* Espacio entre el botón y el texto de la opción */
-  }
+}
+
+#option {
+    margin: 5px;
+}
   

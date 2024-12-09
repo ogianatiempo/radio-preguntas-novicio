@@ -10,13 +10,19 @@
 </head>
 <body>
     <div id="app">
-        <h1>Multiple Choice Quiz</h1>
-        <div id="selection-container">
-            <button onclick="startQuiz('tecnica')">Técnica</button>
-            <button onclick="startQuiz('reglamento')">Reglamento</button>
-        </div>
+        <h1 id="title">Radio Preguntas Categoría Novicio</h1>
         <div id="question-container" style="display: none;"></div>
-        <button id="next-button" style="display: none;">Next</button>
+        <div id="selection-container">
+            <div><button onclick="startQuiz('tecnica')">Técnica</button></div>
+            <div><button onclick="startQuiz('reglamento')">Reglamento</button></div>
+        </div>
+        <div id="submit-container" style="display: none;">
+            <div><button id="submit-button">Submit</button></div>
+        </div>
+        <div id="switch-container" style="display: none;">
+            <div><button id="next-button">Next</button></div>
+            <div><button id="switch-button">Next</button></div>
+        </div>
     </div>
     <script src="script.js"></script>
 </body>

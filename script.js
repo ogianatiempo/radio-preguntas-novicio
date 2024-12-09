@@ -8,8 +8,12 @@ let preguntaActual = 0;
 let puntaje = 0;
 
 const questionContainer = document.getElementById('question-container');
-const nextButton = document.getElementById('next-button');
 const selectionContainer = document.getElementById('selection-container');
+const submitContainer = document.getElementById('submit-container');
+const switchContainer = document.getElementById('switch-container');
+const nextButton = document.getElementById('next-button');
+const switchButton = document.getElementById('switch-button');
+const submitButton = document.getElementById('submit-button');
 
 async function fetchQuestions(set) {
     const response = await fetch(`${set}.json`);
@@ -26,47 +30,47 @@ async function startQuiz(set) {
 
     selectionContainer.style.display = 'none';
     questionContainer.style.display = 'block';
-    nextButton.style.display = 'block';
 
     loadQuestion();
 }
 
 function loadQuestion() {
     if (currentIndex >= currentSet.length) {
-        questionContainer.innerHTML = `<h2>You've answered all the questions in this set!</h2>`;
+        questionContainer.innerHTML = `<h3>You've answered all the questions in this set!</h3>`;
         nextButton.innerText = 'Choose another set';
         nextButton.onclick = resetQuiz;
         return;
     }
 
+    switchContainer.style.display = 'none';
+    submitContainer.style.display = 'block';
+
     const question = currentSet[currentIndex];
     questionContainer.innerHTML = `
-        <h2>${question.pregunta}</h2>
+        <h3>${question.pregunta}</h3>
         <div id="options">
             ${question.opciones.map((option, i) => `
-                <label>
+                <div id="option">
                     <input type="checkbox" value="${i}" class="option">
                     ${option}
-                </label>
+                </div>
             `).join('')}
         </div>
         <div id="feedback" style="margin-top: 20px;"></div>
         <div id="switch-container" style="margin-top: 20px; display: none;"></div>
     `;
-    nextButton.innerText = "Submit";
-    nextButton.onclick = evaluateAnswer;
+
+    submitButton.onclick = evaluateAnswer;
 }
 
 function evaluateAnswer() {
+    document.querySelectorAll('.option').forEach(opt => opt.disabled = true);
+
     const selectedOptions = Array.from(document.querySelectorAll('.option:checked')).map(opt => parseInt(opt.value));
     const correctAnswers = currentSet[currentIndex].indices_correctas;
 
     const feedback = document.getElementById('feedback');
 
-    /*if (selectedOptions.size == 0) {
-        feedback.innerHTML = `<p style="color: green;">Por favor, selecciona una respuesta.</p>`;
-
-    }*/  
     if (selectedOptions.length === correctAnswers.length && 
         selectedOptions.every(val => correctAnswers.includes(val))) {
         preguntaActual++;
@@ -84,12 +88,12 @@ function evaluateAnswer() {
         `;
     }
 
-    // Show "Switch Set" button after answering
-    const switchContainer = document.getElementById('switch-container');
-    switchContainer.innerHTML = `<button id="switch-button">Siguiente pregunta ${otherSet}</button>`;
+    // Show switch buttons after answering and hide submit
     switchContainer.style.display = 'block';
+    submitContainer.style.display = 'none';
 
-    document.getElementById('switch-button').onclick = switchSet;
+    switchButton.onclick = switchSet;
+    switchButton.innerText =  "Siguiente pregunta "+ otherSet;
 
     nextButton.innerText = "Siguiente pregunta "+ currentSetName;
     nextButton.onclick = () => {
